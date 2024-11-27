@@ -1,4 +1,4 @@
-package scalix.Scalix
+package scalix
 
 import org.json4s.native.JsonMethods._
 
