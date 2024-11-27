@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="root [file:/C:/devoirs/IMT/Programmation%20polyglotte/App%20Scala/Scalix/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="root [file:/C:/Projects/Rabi-Scalix/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="DisplayModuleName">
+    <option name="name" value="Scalix" />
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21">
     <output url="file://$MODULE_DIR$/../../target/scala-3.3.4/classes" />
     <output-test url="file://$MODULE_DIR$/../../target/scala-3.3.4/test-classes" />
@@ -12,7 +15,13 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: scala-sdk-3.3.4" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.14:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala3-library_3:3.3.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-ast_3:4.0.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-native_3:4.0.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.14:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-core_3:4.0.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-native-core_3:4.0.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.json4s:json4s-scalap_3:4.0.7:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.thoughtworks.paranamer:paranamer:2.8:jar" level="project" />
   </component>
 </module>
