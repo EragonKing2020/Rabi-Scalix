@@ -7,7 +7,32 @@ class Scalix:
     def key = "1f1a29a9202654e114671efe1078f4e7"
     def url = s"https://api.themoviedb.org/3/"
     def endUrl = s"api_key=$key"
-    def findActorId(name: String, surname: String): Option[Int] = Some(3)
+    def getJsonFromUrl(url: String): Option[String] =
+        try {
+            println(url)
+            Some(scala.io.Source.fromURL(url).mkString)
+        } catch {
+            case e: Exception => None
+        }
+
+    def findActorId(name: String, surname: String): Option[Int] =
+        val request = url + "search/person?query=" + name + "%20" + surname + "&" + endUrl
+        println(request)
+        getJsonFromUrl(request) match
+            case Some(actorInfo) => {
+                val parsedActorInfo = parse(actorInfo)
+                val ids = for {
+                    case JObject(o) <- parsedActorInfo
+                    case JField("id", JInt(id)) <- o
+                } yield id
+                ids match
+                    case h::t => Some(h.toInt)
+                    case Nil => None
+            }
+            case None => {
+                println("No actor found with this name.")
+                None
+            }
 
     def findActorMovies(actorId : Int): Set[(Int, String)] = {
         val source = scala.io.Source.fromURL(url + s"person/$actorId/movie_credits?" + endUrl)
@@ -34,6 +59,7 @@ class Scalix:
 
 object Scalix extends App:
     val test = Scalix()
+    println(test.findActorId("Tom", "Cruise"))
     println(test.findActorMovies(1))
     println(test.findMovieDirector(10000))
     /*val key = "1f1a29a9202654e114671efe1078f4e7"
@@ -42,4 +68,4 @@ object Scalix extends App:
     val contents = source.mkString
     println(contents)*/
     //val json = parse(contents)
-    //println(json)
+    //println(json) 
