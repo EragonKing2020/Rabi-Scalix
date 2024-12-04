@@ -1,7 +1,10 @@
 package scalix
 
-import org.json4s._
-import org.json4s.native.JsonMethods._
+import org.json4s.*
+import org.json4s.native.JsonMethods.*
+
+import java.io.PrintWriter
+import scala.util.Using
 
 case class FullName(name: String, surname: String)
 
@@ -9,6 +12,7 @@ class Scalix:
     def key = "1f1a29a9202654e114671efe1078f4e7"
     def url = s"https://api.themoviedb.org/3/"
     def endUrl = s"api_key=$key"
+
     def getJsonFromUrl(url: String): Option[String] =
         try {
             println(url)
@@ -17,11 +21,26 @@ class Scalix:
             case e: Exception => None
         }
 
+    def writeJson(fileName : String, content : String): Unit = {
+        val out = new PrintWriter("./cache/" + fileName + ".json")
+        out.print(content)
+        out.close()
+    }
+
+    def readJson(fileName : String): Option[String] = {
+        val res = Using(scala.io.Source.fromFile("./cache/" + fileName + ".json")){ res => res.mkString}
+        println("read : " + res);
+        return res.toOption.map(b => b.toString)
+    }
+
+
     def findActorId(name: String, surname: String): Option[Int] =
+        val fileName = s"findActor-$name $surname"
         val request = url + "search/person?query=" + name + "%20" + surname + "&" + endUrl
-        println(request)
-        getJsonFromUrl(request) match
+        val json : Option[String] = readJson(fileName).orElse(getJsonFromUrl(request))
+        json match
             case Some(actorInfo) => {
+                writeJson(fileName,actorInfo)
                 val parsedActorInfo = parse(actorInfo)
                 val ids = for {
                     case JObject(o) <- parsedActorInfo
@@ -61,9 +80,12 @@ class Scalix:
 
 object Scalix extends App:
     val test = Scalix()
+    /*println(test.readJson("test"))
+    println(test.writeJson("test", "{\"json\" : \"AAAAAAAA\"}"))
+    println(test.readJson("test").get)*/
     println(test.findActorId("Tom", "Cruise"))
-    println(test.findActorMovies(1))
-    println(test.findMovieDirector(10000))
+    /*println(test.findActorMovies(1))
+    println(test.findMovieDirector(10000))*/
     /*val key = "1f1a29a9202654e114671efe1078f4e7"
     val url = s"https://api.themoviedb.org/3/search/person?query=Tom%20Cruise&api_key=$key"
     val source = scala.io.Source.fromURL(url)
