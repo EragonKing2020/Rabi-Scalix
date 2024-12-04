@@ -3,6 +3,8 @@ package scalix
 import org.json4s._
 import org.json4s.native.JsonMethods._
 
+case class FullName(name: String, surname: String)
+
 class Scalix:
     def key = "1f1a29a9202654e114671efe1078f4e7"
     def url = s"https://api.themoviedb.org/3/"
