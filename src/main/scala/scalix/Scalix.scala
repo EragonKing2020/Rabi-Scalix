@@ -46,7 +46,7 @@ class Scalix:
         val request = url + "search/person?query=" + name + "%20" + surname + "&" + endUrl
         val json : Option[String] = readJson(fileName).orElse(getJsonFromUrl(request))
         json match
-            case Some(actorInfo) => {
+            case Some(actorInfo) =>
                 writeJson(fileName,actorInfo)
                 val parsedActorInfo = parse(actorInfo)
                 val ids = for {
@@ -56,11 +56,9 @@ class Scalix:
                 ids match
                     case h::t => Some(h.toInt)
                     case Nil => None
-            }
-            case None => {
+            case None =>
                 println("No actor found with this name.")
                 None
-            }
 
     def findActorMovies(actorId : Int): Set[(Int, String)] = {
         val source = scala.io.Source.fromURL(url + s"person/$actorId/movie_credits?" + endUrl)
@@ -70,7 +68,7 @@ class Scalix:
             case JField("original_title", JString(title)) <- o
             case JField("id", JInt(id)) <- o
         } yield (id, title)
-        return tbl.map((id, title) => (id.toInt ,title)).toSet
+        tbl.map((id, title) => (id.toInt ,title)).toSet
     }
 
     def findMovieDirector(movieId: Int): Option[(Int, String)] = {
@@ -82,12 +80,12 @@ class Scalix:
             case JField("id", JInt(id)) <- o
             case JField("name", JString(name)) <- o
         } yield (id.toInt, name)
-        return Option.when(tbl.nonEmpty)(tbl.head)
+        Option.when(tbl.nonEmpty)(tbl.head)
     }
 
     def collaboration(actor1: FullName, actor2: FullName): Set[(String, String)] =
         (findActorId(actor1.name,actor1.surname),findActorId(actor2.name,actor2.surname)) match
-            case (Some(id1),Some(id2)) => {
+            case (Some(id1),Some(id2)) =>
                 val movies1 = for {
                     case (id, name) <- findActorMovies(id1)
                 } yield (id, name)
@@ -98,7 +96,6 @@ class Scalix:
                     case Some(directorId, directorName) => directorName
                     case None => "No director specified.")
                 )
-            }
             case _ => Set()
 
 
